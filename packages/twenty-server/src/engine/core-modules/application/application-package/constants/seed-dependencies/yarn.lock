@@ -684,11 +684,11 @@ __metadata:
   linkType: hard
 
 "brace-expansion@npm:^2.0.1, brace-expansion@npm:^2.0.2":
-  version: 2.0.2
-  resolution: "brace-expansion@npm:2.0.2"
+  version: 2.1.0
+  resolution: "brace-expansion@npm:2.1.0"
   dependencies:
     balanced-match: "npm:^1.0.0"
-  checksum: 10c0/6d117a4c793488af86b83172deb6af143e94c17bc53b0b3cec259733923b4ca84679d506ac261f4ba3c7ed37c46018e2ff442f9ce453af8643ecd64f4a54e6cf
+  checksum: 10c0/439cedf3e23d7993b37919f1d6fdc653ec21a42437ec3e7460bea9ca8b17edf7a24a633273c31d61aa4335877cf29a443f1871814131c87997a1e6223e1f1502
   languageName: node
   linkType: hard
 
@@ -2195,10 +2195,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nodemailer@npm:^8.0.4":
-  version: 8.0.4
-  resolution: "nodemailer@npm:8.0.4"
-  checksum: 10c0/5fb6fa72645b541c18b84b861de46f4740449e1d7c987b4d9ef715d815d613f93262225bc319e217df6215d6f123efadb9a412dcf937fe0a41cbecf279dfb2a0
+"nodemailer@npm:^8.0.5":
+  version: 8.0.6
+  resolution: "nodemailer@npm:8.0.6"
+  checksum: 10c0/84d1b48e647d4ee86752b1dff09012a86d0be9df5d4beb4b63494973d6d1e7262edcd754722f0f1d5f1f7b20c5d8a8ec54cfeb9d265e6d1d3aafc3e94809be5e
   languageName: node
   linkType: hard
 
@@ -2323,9 +2323,9 @@ __metadata:
   linkType: hard
 
 "picomatch@npm:^4.0.3":
-  version: 4.0.3
-  resolution: "picomatch@npm:4.0.3"
-  checksum: 10c0/9582c951e95eebee5434f59e426cddd228a7b97a0161a375aed4be244bd3fe8e3a31b846808ea14ef2c8a2527a6eeab7b3946a67d5979e81694654f939473ae2
+  version: 4.0.4
+  resolution: "picomatch@npm:4.0.4"
+  checksum: 10c0/e2c6023372cc7b5764719a5ffb9da0f8e781212fa7ca4bd0562db929df8e117460f00dff3cb7509dacfc06b86de924b247f504d0ce1806a37fac4633081466b0
   languageName: node
   linkType: hard
 
@@ -2526,7 +2526,7 @@ __metadata:
     lodash.pickby: "npm:^4.6.0"
     lodash.snakecase: "npm:^4.1.1"
     lodash.upperfirst: "npm:^4.3.1"
-    nodemailer: "npm:^8.0.4"
+    nodemailer: "npm:^8.0.5"
     psl: "npm:^1.15.0"
     sharp: "npm:^0.34.5"
     uuid: "npm:^10.0.0"
