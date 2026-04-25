@@ -6,6 +6,7 @@ exports[`getMetadataRelatedMetadataNames should return related metadata names fo
 [
   "objectMetadata",
   "frontComponent",
+  "pageLayout",
 ]
 `;
 
@@ -14,9 +15,18 @@ exports[`getMetadataRelatedMetadataNames should return related metadata names fo
   "objectMetadata",
   "fieldMetadata",
   "viewSort",
+  "fieldPermission",
   "viewField",
   "viewFilter",
   "view",
+]
+`;
+
+exports[`getMetadataRelatedMetadataNames should return related metadata names for fieldPermission 1`] = `
+[
+  "role",
+  "objectMetadata",
+  "fieldMetadata",
 ]
 `;
 
@@ -35,6 +45,7 @@ exports[`getMetadataRelatedMetadataNames should return related metadata names fo
   "objectMetadata",
   "navigationMenuItem",
   "view",
+  "pageLayout",
 ]
 `;
 
@@ -43,6 +54,7 @@ exports[`getMetadataRelatedMetadataNames should return related metadata names fo
   "fieldMetadata",
   "index",
   "objectPermission",
+  "fieldPermission",
   "view",
 ]
 `;
@@ -86,6 +98,7 @@ exports[`getMetadataRelatedMetadataNames should return related metadata names fo
   "roleTarget",
   "objectPermission",
   "permissionFlag",
+  "fieldPermission",
   "rowLevelPermissionPredicate",
   "rowLevelPermissionPredicateGroup",
 ]
@@ -126,6 +139,7 @@ exports[`getMetadataRelatedMetadataNames should return related metadata names fo
   "viewFilterGroup",
   "viewGroup",
   "viewFieldGroup",
+  "viewSort",
 ]
 `;
 

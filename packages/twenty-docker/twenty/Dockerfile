@@ -16,6 +16,7 @@ COPY ./packages/twenty-server/patches /app/packages/twenty-server/patches
 COPY ./packages/twenty-ui/package.json /app/packages/twenty-ui/
 COPY ./packages/twenty-shared/package.json /app/packages/twenty-shared/
 COPY ./packages/twenty-front/package.json /app/packages/twenty-front/
+COPY ./packages/twenty-front-component-renderer/package.json /app/packages/twenty-front-component-renderer/
 COPY ./packages/twenty-sdk/package.json /app/packages/twenty-sdk/
 COPY ./packages/twenty-client-sdk/package.json /app/packages/twenty-client-sdk/
 
@@ -38,12 +39,6 @@ RUN npx nx run twenty-server:lingui:extract && \
 
 RUN npx nx run twenty-server:build
 
-# Bundle setup-db script into a standalone JS file so the final image
-# doesn't need tsx or the TypeScript source tree at runtime.
-RUN npx esbuild packages/twenty-server/scripts/setup-db.ts \
-      --bundle --platform=node --outfile=packages/twenty-server/dist/scripts/setup-db.js \
-      --external:typeorm --external:dotenv --external:pg
-
 # Clean server build output (type declarations and compiled tests are not needed at runtime;
 # source maps are kept because twenty-infra extracts them from the image for Sentry uploads)
 RUN find /app/packages/twenty-server/dist -name '*.d.ts' -delete \
@@ -57,6 +52,7 @@ FROM common-deps AS twenty-front-build
 ARG REACT_APP_SERVER_BASE_URL
 
 COPY ./packages/twenty-front /app/packages/twenty-front
+COPY ./packages/twenty-front-component-renderer /app/packages/twenty-front-component-renderer
 COPY ./packages/twenty-ui /app/packages/twenty-ui
 COPY ./packages/twenty-shared /app/packages/twenty-shared
 COPY ./packages/twenty-sdk /app/packages/twenty-sdk
@@ -74,20 +70,17 @@ RUN if [ -d /app/packages/twenty-front/build ]; then \
 
 
 # ===========================================================================
-# Target: twenty (production)
-#   docker build --target twenty -f packages/twenty-docker/twenty/Dockerfile .
+# Target: twenty-server (server only, no frontend)
+#   docker build --target twenty-server -f packages/twenty-docker/twenty/Dockerfile .
 # ===========================================================================
 
-FROM node:24-alpine AS twenty
+FROM node:24-alpine AS twenty-server
 
 RUN apk add --no-cache curl jq postgresql-client
 
 COPY ./packages/twenty-docker/twenty/entrypoint.sh /app/entrypoint.sh
 RUN chmod +x /app/entrypoint.sh
 WORKDIR /app/packages/twenty-server
-
-ARG REACT_APP_SERVER_BASE_URL
-ENV REACT_APP_SERVER_BASE_URL=$REACT_APP_SERVER_BASE_URL
 
 ARG APP_VERSION
 ENV APP_VERSION=$APP_VERSION
@@ -114,11 +107,8 @@ COPY --chown=1000 --from=twenty-server-build /app/packages/twenty-client-sdk/dis
 COPY --chown=1000 --from=twenty-server-build /app/packages/twenty-ui/package.json /app/packages/twenty-ui/
 COPY --chown=1000 --from=twenty-server-build /app/packages/twenty-front/package.json /app/packages/twenty-front/
 
-# Frontend static build
-COPY --chown=1000 --from=twenty-front-build /app/packages/twenty-front/build /app/packages/twenty-server/dist/front
-
 LABEL org.opencontainers.image.source=https://github.com/twentyhq/twenty
-LABEL org.opencontainers.image.description="Production Twenty image with backend and frontend."
+LABEL org.opencontainers.image.description="Twenty server image (no frontend)."
 
 RUN mkdir -p /app/.local-storage /app/packages/twenty-server/.local-storage && \
     chown 1000:1000 /app/.local-storage /app/packages/twenty-server/.local-storage
@@ -127,6 +117,45 @@ USER 1000
 
 CMD ["node", "dist/main"]
 ENTRYPOINT ["/app/entrypoint.sh"]
+
+
+# ===========================================================================
+# Target: twenty-server-aws (server only + aws-cli, no frontend)
+#   docker build --target twenty-server-aws -f packages/twenty-docker/twenty/Dockerfile .
+# ===========================================================================
+
+FROM twenty-server AS twenty-server-aws
+
+USER root
+RUN apk add --no-cache aws-cli
+USER 1000
+
+
+# ===========================================================================
+# Target: twenty (server + frontend)
+#   docker build --target twenty -f packages/twenty-docker/twenty/Dockerfile .
+# ===========================================================================
+
+FROM twenty-server AS twenty
+
+ARG REACT_APP_SERVER_BASE_URL
+ENV REACT_APP_SERVER_BASE_URL=$REACT_APP_SERVER_BASE_URL
+
+COPY --chown=1000 --from=twenty-front-build /app/packages/twenty-front/build /app/packages/twenty-server/dist/front
+
+LABEL org.opencontainers.image.description="Twenty image with backend and frontend."
+
+
+# ===========================================================================
+# Target: twenty-aws (server + frontend + aws-cli)
+#   docker build --target twenty-aws -f packages/twenty-docker/twenty/Dockerfile .
+# ===========================================================================
+
+FROM twenty AS twenty-aws
+
+USER root
+RUN apk add --no-cache aws-cli
+USER 1000
 
 
 # ===========================================================================
@@ -199,9 +228,9 @@ RUN find /app/packages/twenty-server/dist -name '*.js.map' -delete
 # s6 service definitions
 COPY packages/twenty-docker/twenty-app-dev/rootfs/ /
 
-RUN mkdir -p /data/postgres /data/redis /app/.local-storage \
+RUN mkdir -p /data/postgres /data/redis /app/packages/twenty-server/.local-storage \
  && chown -R postgres:postgres /data/postgres \
- && chown 1000:1000 /data/redis /app/.local-storage
+ && chown 1000:1000 /data/redis /app/packages/twenty-server/.local-storage
 
 ARG REACT_APP_SERVER_BASE_URL
 ARG APP_VERSION=0.0.0
@@ -215,14 +244,15 @@ ENV PG_DATABASE_URL=postgres://twenty:twenty@localhost:5432/default \
     REACT_APP_SERVER_BASE_URL=$REACT_APP_SERVER_BASE_URL \
     APP_VERSION=$APP_VERSION \
     NODE_ENV=development \
-    NODE_PORT=3000 \
+    NODE_PORT=2020 \
     DISABLE_DB_MIGRATIONS=true \
     DISABLE_CRON_JOBS_REGISTRATION=true \
     IS_BILLING_ENABLED=false \
-    SIGN_IN_PREFILLED=true
+    SIGN_IN_PREFILLED=true \
+    APPLICATION_LOG_DRIVER=CONSOLE
 
-EXPOSE 3000
-VOLUME ["/data/postgres", "/app/.local-storage"]
+EXPOSE 2020
+VOLUME ["/data/postgres", "/app/packages/twenty-server/.local-storage"]
 
 LABEL org.opencontainers.image.source=https://github.com/twentyhq/twenty
 LABEL org.opencontainers.image.description="All-in-one Twenty image for local development and SDK usage. Includes PostgreSQL, Redis, server, and worker."

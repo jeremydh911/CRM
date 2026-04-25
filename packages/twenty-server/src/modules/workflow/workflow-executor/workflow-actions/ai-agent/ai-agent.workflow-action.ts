@@ -9,6 +9,7 @@ import { type WorkflowAction } from 'src/modules/workflow/workflow-executor/inte
 import { AgentAsyncExecutorService } from 'src/engine/metadata-modules/ai/ai-agent-execution/services/agent-async-executor.service';
 import { AgentEntity } from 'src/engine/metadata-modules/ai/ai-agent/entities/agent.entity';
 import { AiBillingService } from 'src/engine/metadata-modules/ai/ai-billing/services/ai-billing.service';
+import { UsageOperationType } from 'src/engine/core-modules/usage/enums/usage-operation-type.enum';
 import { AUTO_SELECT_SMART_MODEL_ID } from 'twenty-shared/constants';
 import {
   WorkflowStepExecutorException,
@@ -78,7 +79,7 @@ export class AiAgentWorkflowAction implements WorkflowAction {
         ? executionContext.authContext.userWorkspaceId
         : null;
 
-    const { result, usage, cacheCreationTokens } =
+    const { result, usage, cacheCreationTokens, nativeWebSearchCallCount } =
       await this.aiAgentExecutionService.executeAgent({
         agent,
         userPrompt: resolveInput(prompt, context) as string,
@@ -93,7 +94,16 @@ export class AiAgentWorkflowAction implements WorkflowAction {
       agent?.modelId ?? AUTO_SELECT_SMART_MODEL_ID,
       { usage, cacheCreationTokens },
       workspaceId,
+      UsageOperationType.AI_WORKFLOW_TOKEN,
       agent?.id || null,
+      userWorkspaceId,
+    );
+
+    // billNativeWebSearchUsage short-circuits when count <= 0, so calling
+    // unconditionally is safe regardless of whether native search fired.
+    this.aiBillingService.billNativeWebSearchUsage(
+      nativeWebSearchCallCount,
+      workspaceId,
       userWorkspaceId,
     );
 

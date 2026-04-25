@@ -86,6 +86,13 @@ export const ALL_MANY_TO_ONE_METADATA_RELATIONS = {
       isNullable: true,
       universalForeignKey: 'frontComponentUniversalIdentifier',
     },
+    pageLayout: {
+      metadataName: 'pageLayout',
+      foreignKey: 'pageLayoutId',
+      inverseOneToManyProperty: null,
+      isNullable: true,
+      universalForeignKey: 'pageLayoutUniversalIdentifier',
+    },
   },
   navigationMenuItem: {
     workspace: null,
@@ -111,6 +118,13 @@ export const ALL_MANY_TO_ONE_METADATA_RELATIONS = {
       inverseOneToManyProperty: null,
       isNullable: true,
       universalForeignKey: 'viewUniversalIdentifier',
+    },
+    pageLayout: {
+      metadataName: 'pageLayout',
+      foreignKey: 'pageLayoutId',
+      inverseOneToManyProperty: null,
+      isNullable: true,
+      universalForeignKey: 'pageLayoutUniversalIdentifier',
     },
   },
   fieldMetadata: {
@@ -139,7 +153,6 @@ export const ALL_MANY_TO_ONE_METADATA_RELATIONS = {
     },
   },
   objectMetadata: {
-    dataSource: null,
     workspace: null,
     application: null,
   },
@@ -307,6 +320,31 @@ export const ALL_MANY_TO_ONE_METADATA_RELATIONS = {
       inverseOneToManyProperty: 'objectPermissions',
       isNullable: false,
       universalForeignKey: 'objectMetadataUniversalIdentifier',
+    },
+  },
+  fieldPermission: {
+    workspace: null,
+    application: null,
+    role: {
+      metadataName: 'role',
+      foreignKey: 'roleId',
+      inverseOneToManyProperty: 'fieldPermissions',
+      isNullable: false,
+      universalForeignKey: 'roleUniversalIdentifier',
+    },
+    objectMetadata: {
+      metadataName: 'objectMetadata',
+      foreignKey: 'objectMetadataId',
+      inverseOneToManyProperty: 'fieldPermissions',
+      isNullable: false,
+      universalForeignKey: 'objectMetadataUniversalIdentifier',
+    },
+    fieldMetadata: {
+      metadataName: 'fieldMetadata',
+      foreignKey: 'fieldMetadataId',
+      inverseOneToManyProperty: 'fieldPermissions',
+      isNullable: false,
+      universalForeignKey: 'fieldMetadataUniversalIdentifier',
     },
   },
   pageLayout: {
