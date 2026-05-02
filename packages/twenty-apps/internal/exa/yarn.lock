@@ -3079,13 +3079,13 @@ __metadata:
   linkType: hard
 
 "postcss@npm:^8.5.6":
-  version: 8.5.10
-  resolution: "postcss@npm:8.5.10"
+  version: 8.5.13
+  resolution: "postcss@npm:8.5.13"
   dependencies:
     nanoid: "npm:^3.3.11"
     picocolors: "npm:^1.1.1"
     source-map-js: "npm:^1.2.1"
-  checksum: 10c0/c592dffa0c4873b401f01955b265538d9942f425040df5e2b8f0ad34c83773a792ea0fa5859ccc99cfb5b955b4ebff118ab7056315388dc83b107b0fa8313576
+  checksum: 10c0/3aa7c8cbdfbfd99b34406a433cef56d164dd135fc9cb9e63d487cc363291f877a55ec7b8ff6ec15348c17c2d98a43be46bfad671e6340403041a3e79f70c2f2f
   languageName: node
   linkType: hard
 
@@ -3787,6 +3787,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"twenty-client-sdk@npm:2.1.0":
+  version: 2.1.0
+  resolution: "twenty-client-sdk@npm:2.1.0"
+  dependencies:
+    "@genql/cli": "npm:^3.0.3"
+    "@genql/runtime": "npm:^2.10.0"
+    esbuild: "npm:^0.25.0"
+    graphql: "npm:^16.8.1"
+  checksum: 10c0/cd4248fbb756f5ab8ed8fddf8db37e8776b870fa7d218f7d2cd8ff7f0c2a1764b2156e70c8395b0b7095384991d803570e7725efa32102014cfb1b32dc9f0577
+  languageName: node
+  linkType: hard
+
 "twenty-exa@workspace:.":
   version: 0.0.0-use.local
   resolution: "twenty-exa@workspace:."
@@ -3795,15 +3807,15 @@ __metadata:
     exa-js: "npm:^2.12.1"
     oxlint: "npm:^0.16.0"
     twenty-client-sdk: "npm:2.0.0"
-    twenty-sdk: "npm:2.0.0"
+    twenty-sdk: "npm:2.1.0"
     typescript: "npm:^5.9.3"
     vitest: "npm:^3.1.1"
   languageName: unknown
   linkType: soft
 
-"twenty-sdk@npm:2.0.0":
-  version: 2.0.0
-  resolution: "twenty-sdk@npm:2.0.0"
+"twenty-sdk@npm:2.1.0":
+  version: 2.1.0
+  resolution: "twenty-sdk@npm:2.1.0"
   dependencies:
     "@genql/cli": "npm:^3.0.3"
     "@genql/runtime": "npm:^2.10.0"
@@ -3823,7 +3835,7 @@ __metadata:
     react: "npm:^19.0.0"
     react-dom: "npm:^19.0.0"
     tinyglobby: "npm:^0.2.15"
-    twenty-client-sdk: "npm:2.0.0"
+    twenty-client-sdk: "npm:2.1.0"
     typescript: "npm:^5.9.2"
     uuid: "npm:^13.0.0"
     vite: "npm:^7.0.0"
@@ -3831,7 +3843,7 @@ __metadata:
     zod: "npm:^4.1.11"
   bin:
     twenty: dist/cli.cjs
-  checksum: 10c0/ea0d50a002e88b177555987840fa9dfeda0f3482f42240bda04a79485f69e9717492a265de8080f599e03960859cbcab0e686c6b6bf8fe0872139f9dc1645dd5
+  checksum: 10c0/6584e50b1b8c861ef3c7593f9fea47adbc5a77ef1221076e861dca425cf334335d67111645775ca318c9fc9a6ad513032e619f9cba6f01bf5ddfb22f897248b7
   languageName: node
   linkType: hard
 
@@ -3939,11 +3951,11 @@ __metadata:
   linkType: hard
 
 "uuid@npm:^13.0.0":
-  version: 13.0.0
-  resolution: "uuid@npm:13.0.0"
+  version: 13.0.1
+  resolution: "uuid@npm:13.0.1"
   bin:
     uuid: dist-node/bin/uuid
-  checksum: 10c0/950e4c18d57fef6c69675344f5700a08af21e26b9eff2bf2180427564297368c538ea11ac9fb2e6528b17fc3966a9fd2c5049361b0b63c7d654f3c550c9b3d67
+  checksum: 10c0/7bb8ad18b11871b7bd1b9161a60610c2b6ce8f7300d93932f92117a2ab9b40479dd23e81929ac848e8a7c45f78b8ed3333f88694b71c17ff3265e443f8684642
   languageName: node
   linkType: hard
 
